@@ -1,3 +1,21 @@
+a {
+  text-decoration: none;
+}
+
+a:link, a:visited {
+  color: #ffffff;
+}
+
+a:hover {
+  color: #ff7597;
+}
+
+body {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
@@ -6,4 +24,13 @@
 
 #greeting-container {
   margin-top: 20px;
+}
+
+.navbar a {
+  text-align: center;
+  padding: 14px 16px;
+}
+
+.navbar-right {
+  float: right;
 }
