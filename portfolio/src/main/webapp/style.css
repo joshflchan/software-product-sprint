@@ -1,13 +1,9 @@
-a {
+a, a:visited {
   text-decoration: none;
 }
 
 a:link, a:visited {
-  color: #ffffff;
-}
-
-a:hover {
-  color: #ff7597;
+  color: #ff0266
 }
 
 body {
@@ -26,11 +22,28 @@ body {
   margin-top: 20px;
 }
 
-.navbar a {
-  text-align: center;
+.navbar a{
   padding: 14px 16px;
+  text-align: center;
 }
 
 .navbar-right {
   float: right;
+}
+
+.post{
+  border: 1px solid #ffffff;
+  margin: 20px 10px;
+  padding: 10px 20px;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width:100%;
+}
+
+h2, h4 {
+  color: #ff7597;
 }
