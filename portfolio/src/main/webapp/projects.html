@@ -1,70 +1,84 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Projects</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div class="navbar">
-      <a href="index.html">Josh Chan</a>
-      <div class="navbar-right">
-        <a href="blog.html">Blog</a>
-        <a href="projects.html">Projects</a>
-        <a href="public/JoshChan_Resume.pdf">Resume</a>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Projects</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div class="navbar">
+    <a href="index.html">Josh Chan</a>
+    <div class="navbar-right">
+      <a href="blog.html">Blog</a>
+      <a href="projects.html">Projects</a>
+      <a href="public/JoshChan_Resume.pdf">Resume</a>
+    </div>
+  </div>
+  <div id="content">
+    <div class="post">
+      <div class="post-heading">
+        <h2>I Choose You!</h2>
+        <h5>Jan 27, 2019</h5>
+      </div>
+      <div class="post-content">
+        <img src="public/images/ichooseyou.jpg"
+          alt="Demo of battle in app with Charmander and Squirtle." />
+        <h4>Background</h4>
+        <p>I Choose You! is a 24-hour hackathon project that allows Pokémon
+          fans to live their childhood dreams of battling with their trading
+          cards and shouting attack commands -
+          <a href="https://twitter.com/keithwhor/status/1089681530044207104">
+            Quick demo recorded by Keith from Standard Library
+          </a>.
+        </p>
+        <h4>What is "I Choose You!"?</h4>
+        <img src="public/images/nwhacks_group.jpg"
+          alt="Team photo of hackathon group and Stdlib executives." />
+        <p>Inspired by the popular video game Pokémon GO, I Choose You! is an
+          augmented reality mobile game that utilizes numerous technologies
+          to bring forward its unique experience. Created at <a
+            href="https://2019.nwhacks.io/#/">nwHacks 2019</a>, the project was
+          developed with the Unity Engine
+          (for game engine, android packaging and models/textures), <a
+            href="https://engine.vuforia.com/engine">
+            Vuforia AR engine</a> (for augmented reality and image tracking),
+          IBM Watson’s voice-to-text API (for speech recognition), and custom
+          Stdlib REST APIs (to calculate battle logic). The project won the
+          award: “Best/MostCreative Use of Standard Library,” presented by the
+          sponsor Standard Library.
+        </p>
+        <h4>How it works</h4>
+        <p>When the app is opened, audio is constantly being streamed to IBM
+          Watson and processed, in which a call is then made to IBM Watson’s
+          API. Given thevoice commands recognized to text, scripts within
+          Unity’s engine are run and calltwo custom REST APIs that we created
+          and are hosted on Standard Library - one API for the “attacking”
+          player and one for the “waiting” player.” These APIs allow us to
+          calculate the battle logic based on attack types and move attack
+          damage. Once processed, Unity’s game engine is triggered to display
+          the attackanimations of the respective Pokémon.
+        </p>
+        <p>I personally handled the integration of Vuforia’s AR engine and image
+          targetting features with Unity, programming the attack animation
+          scripts in C#, and modeling the battle animations.
+        </p>
+        <h4>Want to see more?</h4>
+        <ul>
+          <li>Checkout the <a
+              href="https://devpost.com/software/i-choose-ndouble-you">devpost</a>
+            here</li>
+          <li>Stdlib APIs <a
+              href="https://stdlib.com/@huangsa/lib/waitingplayer-calc/#-">here</a>
+            and <a
+              href="https://stdlib.com/@huangsa/lib/activeplayer-calc/#-">here</a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div id="content">
-      <div class="post">
-        <div class="post-heading">
-          <h2>I Choose You!</h2>
-          <h5>Jan 27, 2019</h5>
-        </div>
-        <div class="post-content">
-          <img src="public/images/ichooseyou.jpg" alt="Demo of battle in app with Charmander and Squirtle."/>
-          <h4>Background</h4>
-          <p>I Choose You! is a 24-hour hackathon project that allows Pokémon 
-            fans to live their childhood dreams of battling with their trading 
-            cards and shouting attack commands -
-            <a href="https://twitter.com/keithwhor/status/1089681530044207104"> 
-              Quick demo recorded by Keith from Standard Library
-            </a>.
-          </p>
-          <h4>What is "I Choose You!"?</h4>
-          <img src="public/images/nwhacks_group.jpg" alt="Team photo of hackathon group and StdLib executives."/>
-          <p>Inspired by the popular video game Pokémon GO, I Choose You! is an 
-             augmented reality mobile game that utilizes numerous technologies 
-             to bring forward its unique experience. Created at <a href="https://2019.nwhacks.io/#/">
-             nwHacks 2019</a>, the project was developed with the Unity Engine (for game 
-             engine, android packaging and models/textures), <a href="https://engine.vuforia.com/engine">
-             Vuforia AR engine</a>(for augmented reality and image tracking), IBM Watson’s 
-             voice-to-text API (for speech recognition), and custom Stdlib REST APIs 
-             (to calculate battle logic). The project won the award: “Best/Most Creative Use of 
-             Standard Library,” presented by the sponsor Standard Library.
-          </p>
-          <h4>How it works</h4>
-          <p>When the app is opened, audio is constantly being streamed to IBM Watson and
-             processed, in which a call is then made to IBM Watson’s API. Given the voice 
-             commands recognized to text, scripts within Unity’s engine are run and call 
-             two custom REST APIs that we created and are hosted on Standard Library - one 
-             API for the “attacking” player and one for the “waiting” player.” These APIs 
-             allow us to calculate the battle logic based on attack types and move attack 
-             damage. Once processed, Unity’s game engine is triggered to display the attack 
-             animations of the respective Pokémon.
-          </p>
-          <p>I personally handled the integration of Vuforia’s AR engine and image targetting 
-            features with Unity, programming the attack animation scripts in C#, and modeling 
-            the battle animations.
-          </p>
-          <h4>Want to see more?</h4>
-          <ul>
-            <li>Checkout the <a href="https://devpost.com/software/i-choose-ndouble-you">devpost</a> here</li>
-            <li>Stdlib APIs <a href="https://stdlib.com/@huangsa/lib/waitingplayer-calc/#-">here</a> and <a
-             href="https://stdlib.com/@huangsa/lib/activeplayer-calc/#-">here</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </body>
+  </div>
+</body>
+
 </html>
