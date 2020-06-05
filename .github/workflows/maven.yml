@@ -18,7 +18,14 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Setup gcloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          project_id: jchan-sps-summer20
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          
       - name: Deploy with Maven
-        run: mvn package appengine:deploy -X -e 
+        run: mvn package appengine:deploy -q 
         working-directory: portfolio
     
