@@ -43,5 +43,4 @@ function activateSecret() {
   document.body.style.backgroundImage = "url('public/images/secret.gif')";
   var audio = new Audio('public/secret.mp3');
   audio.play();
-  time.sleep()
 }
