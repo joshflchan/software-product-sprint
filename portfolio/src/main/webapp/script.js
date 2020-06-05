@@ -26,3 +26,22 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+/**
+ * hackerman 
+ */
+let secretPosition = 0;
+const SECRET_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+document.addEventListener('keydown', (e) => {
+  secretPosition = (e.keyCode == SECRET_CODE[secretPosition]) ? secretPosition + 1 : 0;
+  if (secretPosition == SECRET_CODE.length) {
+    activateSecret();
+  }
+});
+
+function activateSecret() {
+  document.body.style.backgroundImage = "url('public/images/secret.gif')";
+  var audio = new Audio('public/secret.mp3');
+  audio.play();
+  time.sleep()
+}
