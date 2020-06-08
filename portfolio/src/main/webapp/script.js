@@ -51,3 +51,12 @@ function activateSecret() {
   var audio = new Audio('public/secret.mp3');
   audio.play();
 }
+
+/**
+ * Fetches a message from the server and adds it to the DOM.
+ */
+ async function getMessage() {
+  const response = await fetch('/data');
+  const message = await response.text();
+  document.getElementById('message-container').innerText = message;
+}
