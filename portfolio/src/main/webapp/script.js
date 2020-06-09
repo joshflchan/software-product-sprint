@@ -53,10 +53,23 @@ function activateSecret() {
 }
 
 /**
- * Fetches a message from the server and adds it to the DOM.
+ * Fetches messages from the server and adds it to the DOM.
  */
- async function getMessage() {
+ async function getMessages() {
   const response = await fetch('/data');
-  const message = await response.text();
-  document.getElementById('message-container').innerText = message;
+  const messages = await response.json();
+  
+  const messagesListElement = document.getElementById('message-container');
+  messagesListElement.innerHTML = '';
+  for (let i = 0; i < messages.length; i++) {
+    messagesListElement.appendChild(
+      createListElement(`Message #${i}: ${messages[i]}`));
+  }
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
