@@ -63,7 +63,7 @@ function activateSecret() {
   messagesListElement.innerHTML = '';
   for (let i = 0; i < messages.length; i++) {
     messagesListElement.appendChild(
-      createListElement(`Message #${i}: ${messages[i]}`));
+      createListElement(messages[i]));
   }
 }
 
