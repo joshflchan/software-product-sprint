@@ -44,6 +44,19 @@
     <p>Click here for messages:</p>
     <button onclick="getMessages()">Give me the messages!</button>
     <div id="message-container"></div>
+
+    <form action="/data" method="POST">
+
+      <label for="commenter-name">Name:</label>
+      <input type="text" name="commenter-name" value="">
+      <br>
+      <label for="text-input"></label>
+      <textarea name="text-input" placeholder="Write your comment here" 
+        rows="4" cols="50"></textarea>
+      <br/><br/>
+
+      <input type="submit" />
+    </form>
   </div>
 </body>
 
