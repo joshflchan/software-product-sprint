@@ -8,7 +8,7 @@
   <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="getMessages()">
   <div class="navbar">
     <a href="index.html">Josh Chan</a>
     <div class="navbar-right">
@@ -41,9 +41,9 @@
     <button onclick="addRandomFact()">Give me a fact!</button>
     <div id="fact-container"></div>
 
-    <p>Click here for messages:</p>
-    <button onclick="getMessages()">Give me the messages!</button>
+    <p>Messages:</p>
     <div id="message-container"></div>
+    <br><br/>
 
     <form action="/data" method="POST">
 
