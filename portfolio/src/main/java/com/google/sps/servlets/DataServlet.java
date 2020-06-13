@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson; 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,17 +34,31 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> comments;
   private DatastoreService datastore;
   
   @Override
   public void init() {
-    comments = new ArrayList<>();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    List<String> comments = new ArrayList<>();
+
+    for (Entity comment : results.asIterable()) {
+      String commenterName = (String) comment.getProperty("commenter");
+      String text = (String) comment.getProperty("text");
+      Instant timestamp = Instant.parse((String) comment.getProperty("timestamp"));
+      DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        .withZone(ZoneId.systemDefault());
+      String strDate = dateFormat.format(timestamp);
+
+      String formmatedComment = String.format("[%s] %s says: \"%s\"", strDate, commenterName, text);
+      comments.add(formmatedComment);
+    }
+
     // Convert the list of comments to JSON
     Gson gson = new Gson();
     String json = gson.toJson(comments);
@@ -56,20 +73,13 @@ public class DataServlet extends HttpServlet {
     // Get the input from the form.
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
     String comment = getParameter(request, "text-input", "Nothing...");
-
-    Instant timestamp = Instant.now();
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        .withZone(ZoneId.systemDefault());
-    String strDate = dateFormat.format(timestamp); 
+    Instant timestamp = Instant.now(); 
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commenter", commenterName);
     commentEntity.setProperty("text", comment);
     commentEntity.setProperty("timestamp", timestamp.toString());
 
-    String formmatedComment = String.format("[%s] %s says: \"%s\"", strDate, commenterName, comment);
-
-    comments.add(formmatedComment);
     datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
