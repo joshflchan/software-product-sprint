@@ -43,10 +43,12 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get comments and sort by most recent
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     List<String> comments = new ArrayList<>();
 
+    // Loop over all Comment entities and format to display
     for (Entity comment : results.asIterable()) {
       String commenterName = (String) comment.getProperty("commenter");
       String text = (String) comment.getProperty("text");
@@ -75,11 +77,11 @@ public class DataServlet extends HttpServlet {
     String comment = getParameter(request, "text-input", "Nothing...");
     Instant timestamp = Instant.now(); 
 
+    // Create Comment Entity in Datastore service
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commenter", commenterName);
     commentEntity.setProperty("text", comment);
     commentEntity.setProperty("timestamp", timestamp.toString());
-
     datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
