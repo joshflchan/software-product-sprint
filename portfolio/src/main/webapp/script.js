@@ -53,17 +53,17 @@ function activateSecret() {
 }
 
 /**
- * Fetches messages from the server and adds it to the DOM.
+ * Fetches comments from the server and adds it to the DOM.
  */
- async function getMessages() {
+ async function getComments() {
   const response = await fetch('/data');
-  const messages = await response.json();
+  const comments = await response.json();
   
-  const messagesListElement = document.getElementById('message-container');
-  messagesListElement.innerHTML = '';
-  for (let i = 0; i < messages.length; i++) {
-    messagesListElement.appendChild(
-      createListElement(messages[i]));
+  const commentsListElement = document.getElementById('comment-container');
+  commentsListElement.innerHTML = '';
+  for (let i = 0; i < comments.length; i++) {
+    commentsListElement.appendChild(
+      createListElement(comments[i]));
   }
 }
 

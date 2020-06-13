@@ -29,18 +29,18 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> messages;
+  private List<String> comments;
   
   @Override
   public void init() {
-    messages = new ArrayList<>();
+    comments = new ArrayList<>();
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Convert the list of messages to JSON
+    // Convert the list of comments to JSON
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
+    String json = gson.toJson(comments);
 
     // Send the JSON as the response
     response.setContentType("application/json;");
@@ -51,15 +51,15 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
-    String message = getParameter(request, "text-input", "Nothing...");
+    String comment = getParameter(request, "text-input", "Nothing...");
     
     Date date = new Date();
     DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
     String strDate = dateFormat.format(date); 
-    String formmatedMessage = String.format("[%s] %s says: \"%s\"", strDate, commenterName, message);
+    String formmatedComment = String.format("[%s] %s says: \"%s\"", strDate, commenterName, comment);
 
-    // Add formatted message to the list. 
-    messages.add(formmatedMessage);
+    // Add formatted comment to the list. 
+    comments.add(formmatedComment);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
