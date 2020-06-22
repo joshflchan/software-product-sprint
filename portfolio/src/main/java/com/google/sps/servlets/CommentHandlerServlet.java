@@ -34,13 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD:portfolio/src/main/java/com/google/sps/servlets/CommentHandlerServlet.java
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
-import java.time.ZoneId;
-=======
-import java.time.Instant;
->>>>>>> Add Comment class to convert to Json:portfolio/src/main/java/com/google/sps/servlets/DataServlet.java
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

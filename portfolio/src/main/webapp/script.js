@@ -62,8 +62,17 @@ function activateSecret() {
   const commentsListElement = document.getElementById('comment-container');
   commentsListElement.innerHTML = '';
   for (let i = 0; i < comments.length; i++) {
+    comment = comments[i];
+    formattedComment = `${comment.strDate} ${comment.commenterName} says: "${comment.text}"`;
     commentsListElement.appendChild(
-      createListElement(comments[i]));
+      createListElement(formattedComment)
+    );
+
+    if (comment.hasOwnProperty("imageUrl")){
+      const commentImage = document.createElement("img");
+      commentImage.src = comment.imageUrl;
+      commentsListElement.appendChild(commentImage);
+    }
   }
 }
 
