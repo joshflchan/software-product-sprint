@@ -29,13 +29,18 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.gson.Gson; 
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD:portfolio/src/main/java/com/google/sps/servlets/CommentHandlerServlet.java
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 import java.time.ZoneId;
+=======
+import java.time.Instant;
+>>>>>>> Add Comment class to convert to Json:portfolio/src/main/java/com/google/sps/servlets/DataServlet.java
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,19 +61,17 @@ public class CommentHandlerServlet extends HttpServlet {
     // Get comments and sort by most recent
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
-    List<String> comments = new ArrayList<>();
+    List<Comment> comments = new ArrayList<>();
 
     // Loop over all Comment entities and format to display
-    for (Entity comment : results.asIterable()) {
-      String commenterName = (String) comment.getProperty("commenter");
-      String text = (String) comment.getProperty("text");
-      Instant timestamp = Instant.parse((String) comment.getProperty("timestamp"));
-      DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        .withZone(ZoneId.systemDefault());
-      String strDate = dateFormat.format(timestamp);
+    for (Entity commentEntity : results.asIterable()) {
+      String commenterName = (String) commentEntity.getProperty("commenter");
+      String text = (String) commentEntity.getProperty("text");
+      Instant timestamp = Instant.parse((String) commentEntity.getProperty("timestamp"));
+      String imageUrl = (String) commentEntity.getProperty("imageUrl");
 
-      String formmatedComment = String.format("[%s] %s says: \"%s\"", strDate, commenterName, text);
-      comments.add(formmatedComment);
+      Comment comment = new Comment(timestamp, commenterName, text, imageUrl);
+      comments.add(comment);
     }
 
     // Convert the list of comments to JSON
