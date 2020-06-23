@@ -8,7 +8,7 @@
   <script src="script.js"></script>
 </head>
 
-<body onload="getComments()">
+<body onload="getComments(); fetchBlobstoreUrl()">
   <div class="navbar">
     <a href="index.html">Josh Chan</a>
     <div class="navbar-right">
@@ -45,7 +45,7 @@
     <div id="comment-container"></div>
     <br><br/>
 
-    <form action="/data" method="POST">
+    <form id="comment-form" method="POST" enctype="multipart/form-data">
 
       <label for="commenter-name">Name:</label>
       <input type="text" name="commenter-name" value="">
@@ -53,6 +53,9 @@
       <label for="text-input"></label>
       <textarea name="text-input" placeholder="Write your comment here" 
         rows="4" cols="50"></textarea>
+      <br>
+      <p>Attach an image:</p>
+      <input type="file" name="image">
       <br/><br/>
 
       <input type="submit" />

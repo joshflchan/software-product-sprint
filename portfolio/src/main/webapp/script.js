@@ -56,7 +56,7 @@ function activateSecret() {
  * Fetches comments from the server and adds it to the DOM.
  */
  async function getComments() {
-  const response = await fetch('/data');
+  const response = await fetch('/comments');
   const comments = await response.json();
   
   const commentsListElement = document.getElementById('comment-container');
@@ -72,4 +72,15 @@ function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
+}
+
+function fetchBlobstoreUrl() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const messageForm = document.getElementById('comment-form');
+        messageForm.action = imageUploadUrl;
+      });
 }
