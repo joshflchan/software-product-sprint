@@ -56,7 +56,7 @@ function activateSecret() {
  * Fetches comments from the server and adds it to the DOM.
  */
  async function getComments() {
-  const response = await fetch('/data');
+  const response = await fetch('/comments');
   const comments = await response.json();
   
   const commentsListElement = document.getElementById('comment-container');

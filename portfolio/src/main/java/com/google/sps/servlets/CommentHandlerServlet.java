@@ -33,15 +33,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+import java.time.ZoneId;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+/** Servlet that processes and displays comment data including text and images.*/
+@WebServlet("/comments")
+public class CommentHandlerServlet extends HttpServlet {
   private DatastoreService datastore;
   
   @Override
