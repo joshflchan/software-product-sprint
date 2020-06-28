@@ -44,7 +44,31 @@ public final class FindMeetingQuery {
       }
     }
 
+    // for (TimeRange t: busyTimes){
+    //     System.out.println(t);
+    // }
+
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
+    for (int i = 0; i < busyTimes.size() - 1; i++){
+      TimeRange timeRange = busyTimes.get(i);
+      TimeRange nextTimeRange = busyTimes.get(i+1);
+      if (timeRange.contains(nextTimeRange)){
+        // Keep the longer time
+        busyTimes.remove(nextTimeRange);
+      } else if (nextTimeRange.contains(timeRange)){
+        // Keep the longer time
+        busyTimes.remove(timeRange);
+      } else if (timeRange.overlaps(nextTimeRange)){
+        TimeRange mergedTimeRange = TimeRange.fromStartEnd(timeRange.start(), nextTimeRange.end(),false);
+        busyTimes.remove(timeRange);
+        busyTimes.remove(nextTimeRange);
+        busyTimes.add(mergedTimeRange);
+      } 
+    }
+
+    for (TimeRange t: busyTimes){
+        System.out.println(t);
+    }
 
     for (int i = 0; i < busyTimes.size(); i++){
       TimeRange timeRange = busyTimes.get(i);
@@ -52,9 +76,9 @@ public final class FindMeetingQuery {
         TimeRange firstTimeRange = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, timeRange.start(), false);
         freeTimes.add(firstTimeRange); 
       } else {
-       TimeRange previousTimeRange = busyTimes.get(i-1);
-       TimeRange betweenTimeRange = TimeRange.fromStartEnd(previousTimeRange.end(), timeRange.start(), false);
-       freeTimes.add(betweenTimeRange);
+        TimeRange previousTimeRange = busyTimes.get(i-1);
+        TimeRange betweenTimeRange = TimeRange.fromStartEnd(previousTimeRange.end(), timeRange.start(), false);
+        freeTimes.add(betweenTimeRange);
       }
       if (i == busyTimes.size() - 1){
         TimeRange endTimeRange = TimeRange.fromStartEnd(timeRange.end(), TimeRange.END_OF_DAY, true);
