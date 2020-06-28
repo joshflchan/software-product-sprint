@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -33,8 +34,14 @@ public final class FindMeetingQuery {
       return freeTimes;
     }
 
+    Collection<String> requestAttendees = request.getAttendees();
+
     for (Event e: events){
-      busyTimes.add(e.getWhen());
+      Set<String> eventAttendees = e.getAttendees();
+      //if at least one request attendee is in the event then add to busyTimes
+      if (!Collections.disjoint(requestAttendees, eventAttendees)){
+        busyTimes.add(e.getWhen());
+      }
     }
 
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
@@ -44,6 +51,10 @@ public final class FindMeetingQuery {
       if (i == 0){
         TimeRange firstTimeRange = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, timeRange.start(), false);
         freeTimes.add(firstTimeRange); 
+      } else {
+       TimeRange previousTimeRange = busyTimes.get(i-1);
+       TimeRange betweenTimeRange = TimeRange.fromStartEnd(previousTimeRange.end(), timeRange.start(), false);
+       freeTimes.add(betweenTimeRange);
       }
       if (i == busyTimes.size() - 1){
         TimeRange endTimeRange = TimeRange.fromStartEnd(timeRange.end(), TimeRange.END_OF_DAY, true);
