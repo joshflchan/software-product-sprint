@@ -223,30 +223,30 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-//   @Test
-//   public void ignoresPeopleNotAttending() {
-//     // Add an event, but make the only attendee someone different from the person looking to book
-//     // a meeting. This event should not affect the booking.
-//     Collection<Event> events = Arrays.asList(new Event("Event 1",
-//         TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES), Arrays.asList(PERSON_A)));
-//     MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_B), DURATION_30_MINUTES);
+  @Test
+  public void ignoresPeopleNotAttending() {
+    // Add an event, but make the only attendee someone different from the person looking to book
+    // a meeting. This event should not affect the booking.
+    Collection<Event> events = Arrays.asList(new Event("Event 1",
+        TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES), Arrays.asList(PERSON_A)));
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_B), DURATION_30_MINUTES);
 
-//     Collection<TimeRange> actual = query.query(events, request);
-//     Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
 
-//     Assert.assertEquals(expected, actual);
-//   }
+    Assert.assertEquals(expected, actual);
+  }
 
-//   @Test
-//   public void noConflicts() {
-//     MeetingRequest request =
-//         new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
+  @Test
+  public void noConflicts() {
+    MeetingRequest request =
+        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
 
-//     Collection<TimeRange> actual = query.query(NO_EVENTS, request);
-//     Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
+    Collection<TimeRange> actual = query.query(NO_EVENTS, request);
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
 
-//     Assert.assertEquals(expected, actual);
-//   }
+    Assert.assertEquals(expected, actual);
+  }
 
 //   @Test
 //   public void notEnoughRoom() {

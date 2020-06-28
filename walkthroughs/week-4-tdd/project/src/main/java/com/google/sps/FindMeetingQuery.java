@@ -66,6 +66,10 @@ public final class FindMeetingQuery {
         System.out.println(t);
     }
 
+    if (busyTimes.isEmpty()){
+      freeTimes.add(TimeRange.WHOLE_DAY);
+    }
+
     for (int i = 0; i < busyTimes.size(); i++){
       TimeRange timeRange = busyTimes.get(i);
       if (i == 0){
