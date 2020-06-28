@@ -174,54 +174,54 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-//   @Test
-//   public void doubleBookedPeople() {
-//     // Have one person, but have them registered to attend two events at the same time.
-//     //
-//     // Events  :       |----A----|
-//     //                     |--A--|
-//     // Day     : |---------------------|
-//     // Options : |--1--|         |--2--|
+  @Test
+  public void doubleBookedPeople() {
+    // Have one person, but have them registered to attend two events at the same time.
+    //
+    // Events  :       |----A----|
+    //                     |--A--|
+    // Day     : |---------------------|
+    // Options : |--1--|         |--2--|
 
-//     Collection<Event> events = Arrays.asList(
-//         new Event("Event 1", TimeRange.fromStartDuration(TIME_0830AM, DURATION_60_MINUTES),
-//             Arrays.asList(PERSON_A)),
-//         new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
-//             Arrays.asList(PERSON_A)));
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartDuration(TIME_0830AM, DURATION_60_MINUTES),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
+            Arrays.asList(PERSON_A)));
 
-//     MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
 
-//     Collection<TimeRange> actual = query.query(events, request);
-//     Collection<TimeRange> expected =
-//         Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-//             TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
 
-//     Assert.assertEquals(expected, actual);
-//   }
+    Assert.assertEquals(expected, actual);
+  }
 
-//   @Test
-//   public void justEnoughRoom() {
-//     // Have one person, but make it so that there is just enough room at one point in the day to
-//     // have the meeting.
-//     //
-//     // Events  : |--A--|     |----A----|
-//     // Day     : |---------------------|
-//     // Options :       |-----|
+  @Test
+  public void justEnoughRoom() {
+    // Have one person, but make it so that there is just enough room at one point in the day to
+    // have the meeting.
+    //
+    // Events  : |--A--|     |----A----|
+    // Day     : |---------------------|
+    // Options :       |-----|
 
-//     Collection<Event> events = Arrays.asList(
-//         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-//             Arrays.asList(PERSON_A)),
-//         new Event("Event 2", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
-//             Arrays.asList(PERSON_A)));
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_A)));
 
-//     MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
 
-//     Collection<TimeRange> actual = query.query(events, request);
-//     Collection<TimeRange> expected =
-//         Arrays.asList(TimeRange.fromStartDuration(TIME_0830AM, DURATION_30_MINUTES));
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartDuration(TIME_0830AM, DURATION_30_MINUTES));
 
-//     Assert.assertEquals(expected, actual);
-//   }
+    Assert.assertEquals(expected, actual);
+  }
 
 //   @Test
 //   public void ignoresPeopleNotAttending() {

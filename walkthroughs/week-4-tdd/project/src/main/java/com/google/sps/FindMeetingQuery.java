@@ -44,10 +44,6 @@ public final class FindMeetingQuery {
       }
     }
 
-    // for (TimeRange t: busyTimes){
-    //     System.out.println(t);
-    // }
-
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
     for (int i = 0; i < busyTimes.size() - 1; i++){
       TimeRange timeRange = busyTimes.get(i);
@@ -74,7 +70,9 @@ public final class FindMeetingQuery {
       TimeRange timeRange = busyTimes.get(i);
       if (i == 0){
         TimeRange firstTimeRange = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, timeRange.start(), false);
-        freeTimes.add(firstTimeRange); 
+        if (firstTimeRange.start() != firstTimeRange.end()){
+          freeTimes.add(firstTimeRange); 
+        }
       } else {
         TimeRange previousTimeRange = busyTimes.get(i-1);
         TimeRange betweenTimeRange = TimeRange.fromStartEnd(previousTimeRange.end(), timeRange.start(), false);
@@ -82,7 +80,9 @@ public final class FindMeetingQuery {
       }
       if (i == busyTimes.size() - 1){
         TimeRange endTimeRange = TimeRange.fromStartEnd(timeRange.end(), TimeRange.END_OF_DAY, true);
-        freeTimes.add(endTimeRange);
+        if (endTimeRange.start() != endTimeRange.end()){
+          freeTimes.add(endTimeRange);
+        }
       }
     }
     // throw new UnsupportedOperationException("TODO: Implement this method.");
