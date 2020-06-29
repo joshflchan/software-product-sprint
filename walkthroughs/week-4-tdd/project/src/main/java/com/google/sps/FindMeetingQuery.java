@@ -80,7 +80,9 @@ public final class FindMeetingQuery {
       } else {
         TimeRange previousTimeRange = busyTimes.get(i-1);
         TimeRange betweenTimeRange = TimeRange.fromStartEnd(previousTimeRange.end(), timeRange.start(), false);
-        freeTimes.add(betweenTimeRange);
+        if (betweenTimeRange.duration() >= request.getDuration()){
+          freeTimes.add(betweenTimeRange);
+        }
       }
       if (i == busyTimes.size() - 1){
         TimeRange endTimeRange = TimeRange.fromStartEnd(timeRange.end(), TimeRange.END_OF_DAY, true);
