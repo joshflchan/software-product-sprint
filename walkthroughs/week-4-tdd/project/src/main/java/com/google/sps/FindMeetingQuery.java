@@ -24,18 +24,16 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> freeTimes = new ArrayList<>();
-    ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
-
     if (request.getAttendees().isEmpty()){
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
-
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()){
       return freeTimes;
     }
 
+    ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
     if (busyTimes.isEmpty()){
-      freeTimes.add(TimeRange.WHOLE_DAY);
+      return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
     for (int i = 0; i < busyTimes.size(); i++){
