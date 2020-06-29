@@ -24,7 +24,7 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> freeTimes = new ArrayList<>();
-    ArrayList<TimeRange> busyTimes = new ArrayList<>();
+    ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
 
     if (request.getAttendees().isEmpty()){
       return Arrays.asList(TimeRange.WHOLE_DAY);
@@ -32,38 +32,6 @@ public final class FindMeetingQuery {
 
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()){
       return freeTimes;
-    }
-
-    Collection<String> requestAttendees = request.getAttendees();
-
-    for (Event e: events){
-      Set<String> eventAttendees = e.getAttendees();
-      //if at least one request attendee is in the event then add to busyTimes
-      if (!Collections.disjoint(requestAttendees, eventAttendees)){
-        busyTimes.add(e.getWhen());
-      }
-    }
-
-    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
-    for (int i = 0; i < busyTimes.size() - 1; i++){
-      TimeRange timeRange = busyTimes.get(i);
-      TimeRange nextTimeRange = busyTimes.get(i+1);
-      if (timeRange.contains(nextTimeRange)){
-        // Keep the longer time
-        busyTimes.remove(nextTimeRange);
-      } else if (nextTimeRange.contains(timeRange)){
-        // Keep the longer time
-        busyTimes.remove(timeRange);
-      } else if (timeRange.overlaps(nextTimeRange)){
-        TimeRange mergedTimeRange = TimeRange.fromStartEnd(timeRange.start(), nextTimeRange.end(),false);
-        busyTimes.remove(timeRange);
-        busyTimes.remove(nextTimeRange);
-        busyTimes.add(mergedTimeRange);
-      } 
-    }
-
-    for (TimeRange t: busyTimes){
-        System.out.println(t);
     }
 
     if (busyTimes.isEmpty()){
@@ -91,8 +59,48 @@ public final class FindMeetingQuery {
         }
       }
     }
-    // throw new UnsupportedOperationException("TODO: Implement this method.");
-
     return freeTimes;
+  }
+
+  /**
+   * Considers all request attendees and creates a list of busy times
+   */
+  private ArrayList<TimeRange> getBusyTimes(Collection<Event> events, MeetingRequest request){
+    ArrayList<TimeRange> busyTimes = new ArrayList<>();
+    Collection<String> requestAttendees = request.getAttendees();
+    for (Event e: events){
+      Set<String> eventAttendees = e.getAttendees();
+      //if at least one request attendee is in the event then add to busyTimes
+      if (!Collections.disjoint(requestAttendees, eventAttendees)){
+        busyTimes.add(e.getWhen());
+      }
+    }
+    ArrayList<TimeRange> sortedBusyTimes = sortBusyTimes(busyTimes);
+    return sortedBusyTimes;
+  }
+
+  /**
+   * Sorts busyTimes by start time and updates time ranges if there are overlaps
+   * or nested events. 
+   */
+  private ArrayList<TimeRange> sortBusyTimes(ArrayList<TimeRange> busyTimes){
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
+    for (int i = 0; i < busyTimes.size() - 1; i++){
+      TimeRange timeRange = busyTimes.get(i);
+      TimeRange nextTimeRange = busyTimes.get(i+1);
+      if (timeRange.contains(nextTimeRange)){
+        // Keep the longer time
+        busyTimes.remove(nextTimeRange);
+      } else if (nextTimeRange.contains(timeRange)){
+        // Keep the longer time
+        busyTimes.remove(timeRange);
+      } else if (timeRange.overlaps(nextTimeRange)){
+        TimeRange mergedTimeRange = TimeRange.fromStartEnd(timeRange.start(), nextTimeRange.end(),false);
+        busyTimes.remove(timeRange);
+        busyTimes.remove(nextTimeRange);
+        busyTimes.add(mergedTimeRange);
+      } 
+    }
+    return busyTimes;
   }
 }
