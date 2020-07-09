@@ -25,7 +25,7 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> freeTimes = new ArrayList<>();
     ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
-    int lastFinish = 0;
+    int lastFinish = TimeRange.START_OF_DAY;
 
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()){
       return freeTimes;
