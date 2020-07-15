@@ -24,38 +24,43 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> freeTimes = new ArrayList<>();
-    if (request.getAttendees().isEmpty()){
-      return Arrays.asList(TimeRange.WHOLE_DAY);
-    }
+
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()){
       return freeTimes;
     }
 
     ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
-    if (busyTimes.isEmpty()){
+    int lastFinish = TimeRange.START_OF_DAY;
+
+    if (request.getAttendees().isEmpty() || busyTimes.isEmpty()){
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
-    for (int i = 0; i < busyTimes.size(); i++){
-      TimeRange timeRange = busyTimes.get(i);
-      if (i == 0){
-        TimeRange firstTimeRange = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, timeRange.start(), false);
-        if (firstTimeRange.start() != firstTimeRange.end()){
-          freeTimes.add(firstTimeRange); 
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
+    for (TimeRange timeRange : busyTimes){
+
+        // Add the free time between meetings.
+        if (timeRange.start() > lastFinish){
+            TimeRange freeTimeRange = TimeRange.fromStartEnd(lastFinish, timeRange.start(), false);
+
+            // Only add free time that's long enough for the requested meeting.
+            if (freeTimeRange.duration() >= request.getDuration()){
+                freeTimes.add(freeTimeRange);
+            }
         }
-      } else {
-        TimeRange previousTimeRange = busyTimes.get(i-1);
-        TimeRange betweenTimeRange = TimeRange.fromStartEnd(previousTimeRange.end(), timeRange.start(), false);
-        if (betweenTimeRange.duration() >= request.getDuration()){
-          freeTimes.add(betweenTimeRange);
+
+        // Don't update lastFinish for meetings contained by timeRange.
+        if (timeRange.end() >= lastFinish){
+            lastFinish = timeRange.end();
         }
-      }
-      if (i == busyTimes.size() - 1){
-        TimeRange endTimeRange = TimeRange.fromStartEnd(timeRange.end(), TimeRange.END_OF_DAY, true);
-        if (endTimeRange.start() != endTimeRange.end()){
-          freeTimes.add(endTimeRange);
+    }
+
+    // Get free time after all other meetings end.
+    if (lastFinish < TimeRange.END_OF_DAY){
+        TimeRange freeTimeRange = TimeRange.fromStartEnd(lastFinish, TimeRange.END_OF_DAY, true);
+        if (freeTimeRange.duration() >= request.getDuration()){
+            freeTimes.add(freeTimeRange);
         }
-      }
     }
     return freeTimes;
   }
@@ -72,32 +77,6 @@ public final class FindMeetingQuery {
       if (!Collections.disjoint(requestAttendees, eventAttendees)){
         busyTimes.add(e.getWhen());
       }
-    }
-    ArrayList<TimeRange> sortedBusyTimes = sortBusyTimes(busyTimes);
-    return sortedBusyTimes;
-  }
-
-  /**
-   * Sorts busyTimes by start time and updates time ranges if there are overlaps
-   * or nested events. 
-   */
-  private ArrayList<TimeRange> sortBusyTimes(ArrayList<TimeRange> busyTimes){
-    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
-    for (int i = 0; i < busyTimes.size() - 1; i++){
-      TimeRange timeRange = busyTimes.get(i);
-      TimeRange nextTimeRange = busyTimes.get(i+1);
-      if (timeRange.contains(nextTimeRange)){
-        // Keep the longer time
-        busyTimes.remove(nextTimeRange);
-      } else if (nextTimeRange.contains(timeRange)){
-        // Keep the longer time
-        busyTimes.remove(timeRange);
-      } else if (timeRange.overlaps(nextTimeRange)){
-        TimeRange mergedTimeRange = TimeRange.fromStartEnd(timeRange.start(), nextTimeRange.end(),false);
-        busyTimes.remove(timeRange);
-        busyTimes.remove(nextTimeRange);
-        busyTimes.add(mergedTimeRange);
-      } 
     }
     return busyTimes;
   }
