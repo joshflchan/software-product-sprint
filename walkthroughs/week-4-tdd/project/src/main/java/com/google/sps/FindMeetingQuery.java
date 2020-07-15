@@ -24,12 +24,13 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> freeTimes = new ArrayList<>();
-    ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
-    int lastFinish = TimeRange.START_OF_DAY;
 
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()){
       return freeTimes;
     }
+
+    ArrayList<TimeRange> busyTimes = getBusyTimes(events, request);
+    int lastFinish = TimeRange.START_OF_DAY;
 
     if (request.getAttendees().isEmpty() || busyTimes.isEmpty()){
       return Arrays.asList(TimeRange.WHOLE_DAY);
@@ -37,16 +38,24 @@ public final class FindMeetingQuery {
 
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
     for (TimeRange timeRange : busyTimes){
+
+        // Add the free time between meetings.
         if (timeRange.start() > lastFinish){
             TimeRange freeTimeRange = TimeRange.fromStartEnd(lastFinish, timeRange.start(), false);
+
+            // Only add free time that's long enough for the requested meeting.
             if (freeTimeRange.duration() >= request.getDuration()){
                 freeTimes.add(freeTimeRange);
             }
         }
+
+        // Don't update lastFinish for meetings contained by timeRange.
         if (timeRange.end() >= lastFinish){
             lastFinish = timeRange.end();
         }
     }
+
+    // Get free time after all other meetings end.
     if (lastFinish < TimeRange.END_OF_DAY){
         TimeRange freeTimeRange = TimeRange.fromStartEnd(lastFinish, TimeRange.END_OF_DAY, true);
         if (freeTimeRange.duration() >= request.getDuration()){
