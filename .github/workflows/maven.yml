@@ -26,6 +26,6 @@ jobs:
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
           
       - name: Deploy with Maven
-        run: mvn package appengine:deploy -q 
+        run: mvn package appengine:deploy -x -e
         working-directory: portfolio
     
